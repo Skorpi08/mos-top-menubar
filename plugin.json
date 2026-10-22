@@ -1,0 +1,13 @@
+{
+  "id": "mos-profile-button",
+  "name": "Profile Quick Link",
+  "version": "1.0.0",
+  "description": "Fügt einen Schnellstart-Button oben rechts in die MOS-Menüleiste ein, der direkt zum Profil weiterleitet.",
+  "author": "Dein Name",
+  "type": "ui-extension",
+  "icon": "mdi-account",
+  "repository": "https://github.com",
+  "launch_url": "/profile",
+  "dependencies": [],
+  "restart_required": false
+}
