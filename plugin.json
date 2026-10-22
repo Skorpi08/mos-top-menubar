@@ -6,7 +6,7 @@
   "author": "Dein Name",
   "type": "ui-extension",
   "icon": "mdi-account",
-  "repository": "https://github.com",
+  "repository": "https://github.com/Skorpi08/mos-unraid",
   "launch_url": "/profile",
   "dependencies": [],
   "restart_required": false
