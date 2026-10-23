@@ -9,7 +9,7 @@ STYLE_ID="mos-topbar-style"
 _topbar_css() {
   cat <<'CSS'
 <style id="mos-topbar-style">
-#app > .v-application > .v-application__wrap > .v-navigation-drawer {
+#app > .v-application__wrap > .v-navigation-drawer {
   position: fixed !important;
   top: 64px !important;
   left: 0 !important;
@@ -24,15 +24,15 @@ _topbar_css() {
   border-right: 0 !important;
   border-bottom: 1px solid rgba(var(--v-border-color), var(--v-border-opacity)) !important;
 }
-#app > .v-application > .v-application__wrap > .v-navigation-drawer__scrim {
+#app > .v-application__wrap > .v-navigation-drawer__scrim {
   display: none !important;
 }
-#app > .v-application > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content {
+#app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content {
   height: 56px !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
 }
-#app > .v-application > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
+#app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: nowrap !important;
@@ -43,16 +43,16 @@ _topbar_css() {
   padding: 0 8px !important;
   overflow: visible !important;
 }
-#app > .v-application > .v-application__wrap > .v-navigation-drawer .v-list-item {
+#app > .v-application__wrap > .v-navigation-drawer .v-list-item {
   flex: 0 0 auto !important;
   min-height: 48px !important;
   white-space: nowrap !important;
 }
-#app > .v-application > .v-application__wrap > .v-navigation-drawer .v-list-group {
+#app > .v-application__wrap > .v-navigation-drawer .v-list-group {
   position: relative !important;
   flex: 0 0 auto !important;
 }
-#app > .v-application > .v-application__wrap > .v-navigation-drawer .v-list-group__items {
+#app > .v-application__wrap > .v-navigation-drawer .v-list-group__items {
   position: absolute !important;
   top: 100% !important;
   left: 0 !important;
@@ -66,7 +66,7 @@ _topbar_css() {
   background: rgb(var(--v-theme-surface)) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22) !important;
 }
-#app > .v-application > .v-application__wrap > .v-navigation-drawer .v-list-group__items .v-list-item {
+#app > .v-application__wrap > .v-navigation-drawer .v-list-group__items .v-list-item {
   width: 100% !important;
   white-space: normal !important;
 }
@@ -76,16 +76,16 @@ _topbar_css() {
   --v-layout-left: 0px !important;
 }
 @media (max-width: 600px) {
-  #app > .v-application > .v-application__wrap > .v-navigation-drawer {
+  #app > .v-application__wrap > .v-navigation-drawer {
     top: 56px !important;
     height: 52px !important;
     max-height: 52px !important;
   }
-  #app > .v-application > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content,
-  #app > .v-application > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
+  #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content,
+  #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
     height: 52px !important;
   }
-  #app > .v-application > .v-application__wrap > .v-navigation-drawer .v-list-item {
+  #app > .v-application__wrap > .v-navigation-drawer .v-list-item {
     min-height: 44px !important;
   }
   .v-main {
