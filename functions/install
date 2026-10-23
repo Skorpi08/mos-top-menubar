@@ -11,7 +11,7 @@ if [ ! -f "$INDEX_HTML" ]; then
 fi
 
 CSS_OVERRIDE="<style id='mos-topbar-style'>
-nav, .v-navigation-drawer, .sidebar {
+nav, .v-navigation-drawer, .sidebar, [role="navigation"] {
     display: flex !important;
     flex-direction: row !important;
     position: fixed !important;
@@ -23,29 +23,33 @@ nav, .v-navigation-drawer, .sidebar {
     height: 56px !important;
     max-height: 56px !important;
     transform: translateX(0) !important;
+    box-sizing: border-box !important;
     z-index: 999 !important;
 }
-.v-navigation-drawer__content {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-}
-.v-navigation-drawer .v-list {
+nav ul, nav [role="list"], .sidebar ul, .sidebar [role="list"],
+.v-navigation-drawer__content, .v-navigation-drawer .v-list {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
     align-items: center !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+}
+nav ul, .sidebar ul, .v-navigation-drawer .v-list {
     width: max-content !important;
     min-width: 100% !important;
     height: 56px !important;
     padding: 0 8px !important;
 }
+nav li, nav [role="listitem"], .sidebar li, .sidebar [role="listitem"],
 .v-navigation-drawer .v-list-item {
     flex: 0 0 auto !important;
     min-height: 56px !important;
     white-space: nowrap !important;
+}
+nav a, .sidebar a, .v-navigation-drawer .v-list-item {
+    display: inline-flex !important;
+    align-items: center !important;
 }
 .v-navigation-drawer__scrim {
     display: none !important;
@@ -82,6 +86,6 @@ if ! awk -v css="$CSS_OVERRIDE" '
     exit 1
 fi
 
-chmod --reference="$INDEX_HTML" "$TEMP_HTML"
+chmod 644 "$TEMP_HTML"
 mv "$TEMP_HTML" "$INDEX_HTML"
 echo "Installation erfolgreich abgeschlossen."
