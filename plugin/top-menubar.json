@@ -1,0 +1,9 @@
+{
+  "name": "Top Menu Bar",
+  "description": "Fixiert das MOS-Navigationsmenü am oberen Bildschirmrand über CSS-Injektion.",
+  "category": [ "Utilities" ],
+  "repository": "https://github.com/Skorpi08/mos-unraid",
+  "architecture": [ "amd64", "arm64" ],
+  "driver": false,
+  "author": "DEIN_NAME"
+}
