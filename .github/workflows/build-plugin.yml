@@ -3,13 +3,13 @@ name: Build MOS plugin
 on:
   push:
     tags:
-      - 'v*'
+      - '[0-9]*'
   workflow_dispatch:
     inputs:
       version:
-        description: Plugin release version, for example 1.0.9
+        description: Plugin release version, for example 1.0.12
         required: true
-        default: 1.0.9
+        default: 1.0.12
 
 permissions:
   contents: write
@@ -33,12 +33,12 @@ jobs:
         shell: bash
         run: |
           if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
-            VERSION="${GITHUB_REF_NAME#v}"
+            VERSION="$GITHUB_REF_NAME"
           else
             VERSION="${{ inputs.version }}"
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Build Vue federation remote
         working-directory: page
