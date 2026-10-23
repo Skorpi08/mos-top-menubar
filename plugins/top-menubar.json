@@ -5,7 +5,7 @@
   "repository": "https://github.com/Skorpi08/mos-unraid",
   "architecture": [ "amd64", "arm64" ],
   "driver": false,
-  "version": "1.0.3",
+  "version": "1.0.4",
   "icon": "https://example.com/icon.png",
   "readme_url": "https://example.com/my-driver-docs",
   "author": "your-name",
