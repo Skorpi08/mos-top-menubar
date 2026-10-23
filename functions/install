@@ -1,35 +1,62 @@
 #!/bin/bash
-# install.sh - Injektiert CSS für die obere Navigationsleiste
+set -eu
 
 FRONTEND_DIR="/usr/share/mos/frontend/dist"
+INDEX_HTML="$FRONTEND_DIR/index.html"
+BACKUP_HTML="$INDEX_HTML.bak"
 
-if [ -d "$FRONTEND_DIR" ]; then
-    echo "MOS Frontend gefunden. Injektiere Top-Bar-Styles..."
-    
-    # Backup erstellen
-    cp "$FRONTEND_DIR/index.html" "$FRONTEND_DIR/index.html.bak"
-
-    # CSS Code, der die Sidebar oben fixiert und den Hauptinhalt nach unten schiebt
-    CSS_OVERRIDE="<style id='mos-topbar-style'>
-        nav, .v-navigation-drawer, .sidebar { 
-            position: fixed !important; 
-            top: 0 !important; 
-            left: 0 !important; 
-            width: 100% !important; 
-            height: 55px !important; 
-            flex-direction: row !important; 
-            z-index: 999 !important; 
-        }
-        main, .v-main, .main-content { 
-            padding-top: 70px !important; 
-            padding-left: 15px !important; 
-        }
-    </style>"
-
-    # Vor dem </head>-Tag einfügen
-    sed -i "s|<\/head>|${CSS_OVERRIDE}\n<\/head>|g" "$FRONTEND_DIR/index.html"
-    echo "Installation erfolgreich abgeschlossen."
-else
-    echo "Fehler: MOS Frontend-Pfad nicht gefunden!"
+if [ ! -f "$INDEX_HTML" ]; then
+    echo "Fehler: MOS Frontend-Datei nicht gefunden: $INDEX_HTML" >&2
     exit 1
 fi
+
+if grep -q 'mos-topbar-style' "$INDEX_HTML"; then
+    echo "Top-Bar-Styles sind bereits installiert."
+    exit 0
+fi
+
+CSS_OVERRIDE="<style id='mos-topbar-style'>
+nav, .v-navigation-drawer, .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 55px !important;
+    flex-direction: row !important;
+    z-index: 999 !important;
+}
+main, .v-main, .main-content {
+    padding-top: 70px !important;
+    padding-left: 15px !important;
+}
+</style>"
+
+if [ ! -f "$BACKUP_HTML" ]; then
+    cp "$INDEX_HTML" "$BACKUP_HTML"
+fi
+
+TEMP_HTML=$(mktemp "$FRONTEND_DIR/index.html.XXXXXX")
+trap 'rm -f "$TEMP_HTML"' EXIT
+
+if ! awk -v css="$CSS_OVERRIDE" '
+    {
+        lower = tolower($0)
+        position = index(lower, "</head>")
+        if (!inserted && position > 0) {
+            printf "%s%s%s\n", substr($0, 1, position - 1), css, substr($0, position)
+            inserted = 1
+        } else {
+            print
+        }
+    }
+    END {
+        if (!inserted) exit 1
+    }
+' "$INDEX_HTML" > "$TEMP_HTML"; then
+    echo "Fehler: Kein </head>-Tag in $INDEX_HTML gefunden." >&2
+    exit 1
+fi
+
+chmod --reference="$INDEX_HTML" "$TEMP_HTML"
+mv "$TEMP_HTML" "$INDEX_HTML"
+echo "Installation erfolgreich abgeschlossen."
