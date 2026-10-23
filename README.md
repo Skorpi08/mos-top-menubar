@@ -1,15 +1,15 @@
-# Top Menu Bar
+# Top Menu Bar für MOS
 
-Dieses Plugin verschiebt die MOS-Hauptnavigation an den oberen Bildschirmrand.
+Das Plugin stellt die vorhandenen MOS-Navigationseinträge als horizontale Leiste direkt unter der Kopfzeile dar. Die Einträge bleiben mit den originalen MOS-Routen und Berechtigungen verbunden.
 
 ## Installation
 
-Im MOS Hub nach **Top Menu Bar** suchen und das Plugin installieren. Das Plugin ist fuer `amd64` und `arm64` vorgesehen.
+Das Repository als MOS-Hub-Quelle hinzufügen, den Hub aktualisieren und **Top Menu Bar** unter Plugins installieren. MOS Hub installiert das passende `all.deb`-Paket für die jeweilige Systemarchitektur.
+
+## Entwicklung
+
+Das Plugin verwendet die MOS-Vue-Federation-Schnittstelle. Ein Release-Tag wie `v1.0.7` baut das Frontend-Remote und veröffentlicht das MOS-Pluginpaket samt Prüfsumme.
 
 ## Deinstallation
 
-Das Plugin im MOS Hub deinstallieren. Dabei wird die vor der Installation gesicherte Frontend-Datei wiederhergestellt.
-
-## Hinweise
-
-Das Plugin passt die MOS-Frontend-Datei unter `/usr/share/mos/frontend/dist/index.html` an. Nach einem MOS-Frontend-Update kann eine erneute Installation erforderlich sein.
+MOS Hub führt beim Entfernen des Plugins die Wiederherstellung des ursprünglichen `/var/www/index.html` aus.

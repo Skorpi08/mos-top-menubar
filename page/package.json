@@ -1,0 +1,17 @@
+{
+  "name": "mos-top-menu-bar",
+  "private": true,
+  "version": "1.0.7",
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "vue": "3.5.44"
+  },
+  "devDependencies": {
+    "@originjs/vite-plugin-federation": "1.4.1",
+    "@vitejs/plugin-vue": "6.0.3",
+    "vite": "7.3.7"
+  }
+}

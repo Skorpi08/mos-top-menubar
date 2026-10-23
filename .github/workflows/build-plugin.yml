@@ -1,0 +1,97 @@
+name: Build MOS plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Plugin release version, for example 1.0.7
+        required: true
+        default: 1.0.7
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: page/package-lock.json
+
+      - name: Determine release version
+        id: version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="${{ inputs.version }}"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build Vue federation remote
+        working-directory: page
+        env:
+          PLUGIN_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build Debian plugin package
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          PACKAGE="unraid-${VERSION}-1+mos-plugin"
+          PACKAGE_DIR="${PACKAGE}_all"
+          DEB_FILE="${PACKAGE}_all.deb"
+
+          test -f page/dist/unraid/remoteEntry.js
+          test -f page/dist/unraid/manifest.json
+
+          mkdir -p "$PACKAGE_DIR/var/www/mos-plugins/unraid"
+          mkdir -p "$PACKAGE_DIR/boot/optional/plugins/unraid"
+          mkdir -p "$PACKAGE_DIR/DEBIAN"
+          cp -R page/dist/unraid/. "$PACKAGE_DIR/var/www/mos-plugins/unraid/"
+          cp functions "$PACKAGE_DIR/boot/optional/plugins/unraid/functions"
+          cp settings.json "$PACKAGE_DIR/boot/optional/plugins/unraid/settings.json"
+          chmod 755 "$PACKAGE_DIR/boot/optional/plugins/unraid/functions"
+
+          cat > "$PACKAGE_DIR/DEBIAN/control" <<EOF
+          Package: unraid-plugin
+          Version: ${VERSION}-1+mos-plugin
+          Architecture: all
+          Maintainer: Skorpi08
+          Description: MOS horizontal top navigation plugin
+          EOF
+
+          cat > "$PACKAGE_DIR/DEBIAN/postinst" <<'EOF'
+          #!/bin/sh
+          chmod 755 /boot/optional/plugins/unraid/functions 2>/dev/null || true
+          exit 0
+          EOF
+          chmod 755 "$PACKAGE_DIR/DEBIAN/postinst"
+
+          dpkg-deb --build "$PACKAGE_DIR" "$DEB_FILE"
+          md5sum "$DEB_FILE" | awk '{print $1}' > "$DEB_FILE.md5"
+
+      - name: Publish release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: Top Menu Bar ${{ steps.version.outputs.version }}
+          generate_release_notes: true
+          files: |
+            unraid-${{ steps.version.outputs.version }}-1+mos-plugin_all.deb
+            unraid-${{ steps.version.outputs.version }}-1+mos-plugin_all.deb.md5
