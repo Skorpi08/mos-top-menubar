@@ -229,7 +229,7 @@ plugin_update() {
   apply_theme
 }
 
-mos_start() {
+mos_start_after_services() {
   apply_theme
 }
 

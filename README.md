@@ -4,7 +4,7 @@ Das Plugin stellt die vorhandenen MOS-Navigationseinträge als horizontale Leist
 
 ## Einstellungen und Startverhalten
 
-Auf der Plugin-Seite kann zwischen den Themes **Standard**, **Kompakt** und **Akzent** gewählt werden. MOS speichert die Auswahl in `/boot/optional/plugins/unraid/settings.json`; Plugin-Updates übernehmen diese vorhandene Datei. Beim Installieren, Aktualisieren und bei jedem MOS-Start wird das gewählte Theme erneut auf das MOS-Frontend angewendet. Nach dem Speichern muss die Seite einmal neu geladen werden.
+Auf der Plugin-Seite kann zwischen den Themes **Standard**, **Kompakt** und **Akzent** gewählt werden. MOS speichert die Auswahl in `/boot/optional/plugins/unraid/settings.json`; Plugin-Updates übernehmen diese vorhandene Datei. Beim Installieren, Aktualisieren und nach dem Start der MOS-Dienste wird das gewählte Theme erneut auf das MOS-Frontend angewendet. Nach dem Speichern muss die Seite einmal neu geladen werden.
 
 ## Installation
 
