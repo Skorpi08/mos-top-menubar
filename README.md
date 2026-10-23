@@ -4,7 +4,7 @@ Das Plugin stellt die vorhandenen MOS-Navigationseinträge als horizontale Leist
 
 ## Einstellungen und Startverhalten
 
-Auf der Plugin-Seite kann zwischen den Themes **Standard**, **Kompakt** und **Akzent** gewählt werden. MOS speichert die Auswahl in `/boot/optional/plugins/top-menubar/settings.json`; Plugin-Updates übernehmen diese vorhandene Datei. Beim Installieren, Aktualisieren und nach dem Start der MOS-Dienste wird das gewählte Theme erneut auf das MOS-Frontend angewendet. Nach dem Speichern muss die Seite einmal neu geladen werden.
+Die Navigation liegt im blauen MOS-Header und übernimmt native MOS-Menügruppen sowie die Anzeige inaktiver Einträge. Rechts befinden sich Datei- und Terminal-Icons sowie Benachrichtigung, Profil und weitere Aktionen für Hilfe, Abmelden, Neustart und Herunterfahren. Auf der Plugin-Seite kann zusätzlich zwischen den Themes **Standard**, **Kompakt** und **Akzent** gewählt werden. MOS speichert die Auswahl in `/boot/optional/plugins/top-menubar/settings.json`; Plugin-Updates übernehmen diese vorhandene Datei. Beim Installieren, Aktualisieren und nach dem Start der MOS-Dienste wird das gewählte Theme erneut auf das MOS-Frontend angewendet.
 
 ## Installation
 
@@ -16,7 +16,7 @@ Nach dem Umbenennen des GitHub-Repositories von `mos-unraid` zu `mos-top-menubar
 
 ## Entwicklung
 
-Das Plugin verwendet die MOS-Vue-Federation-Schnittstelle. Release-Tags müssen dem Format `1.0.12` ohne führendes `v` entsprechen, damit MOS das Plugin beim Start erkennt. Ein neuer numerischer Release-Tag baut das Frontend-Remote und veröffentlicht das MOS-Pluginpaket samt Prüfsumme. Das Repository heißt `mos-top-menubar`, damit MOS-Repository-Slug und Plugin-ID `top-menubar` übereinstimmen.
+Das Plugin verwendet die MOS-Vue-Federation-Schnittstelle. Release-Tags müssen dem Format `1.0.14` ohne führendes `v` entsprechen, damit MOS das Plugin beim Start erkennt. Ein neuer numerischer Release-Tag baut das Frontend-Remote und veröffentlicht das MOS-Pluginpaket samt Prüfsumme. Das Repository heißt `mos-top-menubar`, damit MOS-Repository-Slug und Plugin-ID `top-menubar` übereinstimmen.
 
 ## Deinstallation
 

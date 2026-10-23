@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Plugin release version, for example 1.0.12
+        description: Plugin release version, for example 1.0.14
         required: true
-        default: 1.0.12
+        default: 1.0.14
 
 permissions:
   contents: write

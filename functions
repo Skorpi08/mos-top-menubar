@@ -12,28 +12,79 @@ _topbar_css() {
 
   cat <<'CSS'
 <style id="mos-topbar-style">
+#app > .v-application__wrap > .v-app-bar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  height: 64px !important;
+  z-index: 1101 !important;
+  background: transparent !important;
+  pointer-events: none !important;
+}
+#app > .v-application__wrap > .v-app-bar .v-toolbar__content {
+  height: 64px !important;
+  background: transparent !important;
+  pointer-events: none !important;
+}
+#app > .v-application__wrap > .v-app-bar .v-toolbar__content > * {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 2;
+}
+#app > .v-application__wrap > .v-app-bar .v-toolbar__content > .v-badge {
+  position: absolute !important;
+  top: 8px !important;
+  right: 188px !important;
+}
+#app > .v-application__wrap > .v-app-bar .v-toolbar__content > a[href="/profile"] {
+  position: absolute !important;
+  top: 8px !important;
+  right: 140px !important;
+}
+#app > .v-application__wrap > .v-app-bar .v-app-bar-nav-icon {
+  display: none !important;
+}
+#app > .v-application__wrap > .v-app-bar .v-toolbar-title {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+}
 #app > .v-application__wrap > .v-navigation-drawer {
   position: fixed !important;
-  top: 64px !important;
+  top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   width: 100vw !important;
   max-width: 100vw !important;
-  height: 56px !important;
-  max-height: 56px !important;
+  height: 64px !important;
+  max-height: 64px !important;
   transform: none !important;
   visibility: visible !important;
-  z-index: 1005 !important;
+  z-index: 1100 !important;
   border-right: 0 !important;
-  border-bottom: 1px solid rgba(var(--v-border-color), var(--v-border-opacity)) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgb(var(--v-theme-primary)) !important;
+  color: rgb(var(--v-theme-on-primary)) !important;
 }
 #app > .v-application__wrap > .v-navigation-drawer__scrim {
   display: none !important;
 }
+#app > .v-application__wrap > .v-navigation-drawer > .v-navigation-drawer__append {
+  display: none !important;
+}
 #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content {
-  height: 56px !important;
+  flex: 0 0 64px !important;
+  width: calc(100% - 250px) !important;
+  max-width: calc(100% - 250px) !important;
+  height: 64px !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+#app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content::-webkit-scrollbar {
+  display: none !important;
 }
 #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
   display: flex !important;
@@ -42,14 +93,129 @@ _topbar_css() {
   align-items: center !important;
   width: max-content !important;
   min-width: 100% !important;
-  height: 56px !important;
-  padding: 0 8px !important;
+  height: 64px !important;
+  box-sizing: border-box !important;
+  padding: 0 250px 0 190px !important;
   overflow: visible !important;
+  background: transparent !important;
+  color: rgb(var(--v-theme-on-primary)) !important;
 }
 #app > .v-application__wrap > .v-navigation-drawer .v-list-item {
   flex: 0 0 auto !important;
-  min-height: 48px !important;
+  min-height: 44px !important;
   white-space: nowrap !important;
+  color: rgb(var(--v-theme-on-primary)) !important;
+}
+#app > .v-application__wrap > .v-navigation-drawer .v-list-item--active {
+  background: rgba(255, 255, 255, 0.16) !important;
+}
+#app > .v-application__wrap > .v-navigation-drawer .v-list-group__items {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  z-index: 1110 !important;
+  display: block !important;
+  width: max-content !important;
+  min-width: 220px !important;
+  max-width: min(320px, 90vw) !important;
+  max-height: calc(100vh - 80px) !important;
+  overflow: auto !important;
+  background: rgb(var(--v-theme-surface)) !important;
+  color: rgb(var(--v-theme-on-surface)) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22) !important;
+}
+#app > .v-application__wrap > .v-navigation-drawer .v-list-group__items .v-list-item {
+  width: 100% !important;
+  color: rgb(var(--v-theme-on-surface)) !important;
+  white-space: normal !important;
+}
+#app > .v-application__wrap > .v-navigation-drawer .v-list-item[href="/mosTools/webterminal"],
+#app > .v-application__wrap > .v-navigation-drawer .v-list-item[href="/mosTools/filebrowser"] {
+  display: none !important;
+}
+#app > .v-application__wrap > .v-navigation-drawer .v-list-group:has(.v-list-item[href="/mosTools/webterminal"]),
+#app > .v-application__wrap > .v-navigation-drawer .v-list-group:has(.v-list-item[href="/mosTools/filebrowser"]) {
+  display: none !important;
+}
+.mos-topbar-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  padding: 0 8px;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 3;
+}
+.mos-topbar-action {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgb(var(--v-theme-on-primary));
+  cursor: pointer;
+  text-decoration: none;
+  pointer-events: auto !important;
+}
+.mos-topbar-action:hover,
+.mos-topbar-action:focus-visible {
+  background: rgba(255, 255, 255, 0.16);
+  outline: none;
+}
+.mos-topbar-action .mdi {
+  font-size: 22px;
+}
+.mos-topbar-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 8px;
+  z-index: 1200;
+  min-width: 220px;
+  padding: 6px;
+  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-radius: 8px;
+  background: rgb(var(--v-theme-surface));
+  color: rgb(var(--v-theme-on-surface));
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+}
+.mos-topbar-menu[hidden] {
+  display: none !important;
+}
+.mos-topbar-menu-item {
+  display: flex;
+  width: 100%;
+  min-height: 40px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.mos-topbar-menu-item:hover,
+.mos-topbar-menu-item:focus-visible {
+  background: rgba(var(--v-theme-on-surface), 0.08);
+  outline: none;
+}
+.mos-topbar-menu-item .mdi {
+  font-size: 20px;
+}
+.mos-topbar-divider {
+  height: 1px;
+  margin: 5px 0;
+  background: rgba(var(--v-border-color), var(--v-border-opacity));
 }
 #app > .v-application__wrap > .v-navigation-drawer .v-list-group {
   position: relative !important;
@@ -59,7 +225,7 @@ _topbar_css() {
   position: absolute !important;
   top: 100% !important;
   left: 0 !important;
-  z-index: 1010 !important;
+  z-index: 1110 !important;
   display: block !important;
   width: max-content !important;
   min-width: 220px !important;
@@ -74,25 +240,38 @@ _topbar_css() {
   white-space: normal !important;
 }
 .v-main {
-  padding-top: 120px !important;
+  padding-top: 64px !important;
   padding-left: 0 !important;
   --v-layout-left: 0px !important;
 }
 @media (max-width: 600px) {
   #app > .v-application__wrap > .v-navigation-drawer {
-    top: 56px !important;
-    height: 52px !important;
-    max-height: 52px !important;
+    top: 0 !important;
+    height: 64px !important;
+    max-height: 64px !important;
+  }
+  #app > .v-application__wrap > .v-app-bar .v-img,
+  #app > .v-application__wrap > .v-app-bar .v-toolbar-title {
+    display: none !important;
   }
   #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content,
   #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
-    height: 52px !important;
+    height: 64px !important;
+  }
+  #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content {
+    flex-basis: 64px !important;
+    width: calc(100% - 220px) !important;
+    max-width: calc(100% - 220px) !important;
+  }
+  #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
+    padding-right: 220px !important;
+    padding-left: 56px !important;
   }
   #app > .v-application__wrap > .v-navigation-drawer .v-list-item {
-    min-height: 44px !important;
+    min-height: 48px !important;
   }
   .v-main {
-    padding-top: 108px !important;
+    padding-top: 64px !important;
   }
 }
 CSS
@@ -100,32 +279,8 @@ CSS
   case "$theme" in
     compact)
       cat <<'CSS'
-#app > .v-application__wrap > .v-navigation-drawer {
-  height: 48px !important;
-  max-height: 48px !important;
-}
-#app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content,
-#app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
-  height: 48px !important;
-}
 #app > .v-application__wrap > .v-navigation-drawer .v-list-item {
   min-height: 40px !important;
-}
-.v-main {
-  padding-top: 112px !important;
-}
-@media (max-width: 600px) {
-  #app > .v-application__wrap > .v-navigation-drawer {
-    height: 44px !important;
-    max-height: 44px !important;
-  }
-  #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content,
-  #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
-    height: 44px !important;
-  }
-  .v-main {
-    padding-top: 100px !important;
-  }
 }
 CSS
       ;;
@@ -143,6 +298,124 @@ CSS
   esac
 
   printf '%s\n' '</style>'
+}
+
+_topbar_runtime() {
+  cat <<'SCRIPT'
+<script id="mos-topbar-runtime">
+(() => {
+  const drawerSelector = '#app > .v-application__wrap > .v-navigation-drawer';
+  const actionPaths = new Set(['/mosTools/webterminal', '/mosTools/filebrowser']);
+
+  const enableDrawer = () => {
+    const drawer = document.querySelector(drawerSelector);
+    if (drawer?.inert) drawer.inert = false;
+  };
+
+  const hideNativeActionItems = () => {
+    const drawer = document.querySelector(drawerSelector);
+    if (!drawer) return;
+
+    for (const item of drawer.querySelectorAll('.v-list-item')) {
+      const label = (item.innerText || '').trim().toLowerCase();
+      if (actionPaths.has(item.getAttribute('href')) || label === 'logout' || label === 'abmelden') {
+        item.dataset.mosTopbarActionHidden = 'true';
+        item.style.display = 'none';
+      }
+    }
+
+    for (const group of drawer.querySelectorAll('.v-list-group')) {
+      const items = [...group.querySelectorAll('.v-list-group__items .v-list-item')];
+      if (items.length && items.every((item) => actionPaths.has(item.getAttribute('href')))) {
+        group.style.display = 'none';
+      }
+    }
+  };
+
+  const createActions = () => {
+    const toolbar = document.querySelector('#app > .v-application__wrap > .v-app-bar .v-toolbar__content');
+    if (!toolbar || toolbar.querySelector('#mos-topbar-actions')) return;
+
+    const actions = document.createElement('div');
+    actions.id = 'mos-topbar-actions';
+    actions.className = 'mos-topbar-actions';
+    actions.innerHTML = `
+      <a class="mos-topbar-action" href="/mosTools/filebrowser" aria-label="Dateibrowser" title="Dateibrowser"><i class="mdi mdi-folder-outline"></i></a>
+      <a class="mos-topbar-action" href="/mosTools/webterminal" aria-label="Terminal" title="Terminal"><i class="mdi mdi-console"></i></a>
+      <div class="mos-topbar-more">
+        <button class="mos-topbar-action" type="button" aria-label="Weitere Aktionen" title="Weitere Aktionen" aria-haspopup="menu" aria-expanded="false"><i class="mdi mdi-dots-vertical"></i></button>
+        <div class="mos-topbar-menu" role="menu" hidden>
+          <a class="mos-topbar-menu-item" role="menuitem" href="https://docs.mos-official.net" target="_blank" rel="noopener"><i class="mdi mdi-lifebuoy"></i>Hilfe</a>
+          <button class="mos-topbar-menu-item" role="menuitem" type="button" data-mos-action="logout"><i class="mdi mdi-logout"></i>Abmelden</button>
+          <div class="mos-topbar-divider"></div>
+          <button class="mos-topbar-menu-item" role="menuitem" type="button" data-mos-action="reboot"><i class="mdi mdi-restart"></i>Neustart</button>
+          <button class="mos-topbar-menu-item" role="menuitem" type="button" data-mos-action="shutdown"><i class="mdi mdi-power"></i>Herunterfahren</button>
+        </div>
+      </div>`;
+
+    const moreButton = actions.querySelector('[aria-haspopup="menu"]');
+    const menu = actions.querySelector('.mos-topbar-menu');
+    moreButton.addEventListener('click', () => {
+      menu.hidden = !menu.hidden;
+      moreButton.setAttribute('aria-expanded', String(!menu.hidden));
+    });
+
+    actions.addEventListener('click', async (event) => {
+      const actionButton = event.target.closest('[data-mos-action]');
+      if (!actionButton) return;
+      menu.hidden = true;
+      moreButton.setAttribute('aria-expanded', 'false');
+
+      if (actionButton.dataset.mosAction === 'logout') {
+        const drawer = document.querySelector(drawerSelector);
+        const logoutItem = [...(drawer?.querySelectorAll('.v-list-item') || [])]
+          .find((item) => ['logout', 'abmelden'].includes((item.innerText || '').trim().toLowerCase()));
+        logoutItem?.click();
+        return;
+      }
+
+      const reboot = actionButton.dataset.mosAction === 'reboot';
+      const label = reboot ? 'System jetzt neu starten?' : 'System jetzt herunterfahren?';
+      if (!window.confirm(label)) return;
+
+      try {
+        const response = await fetch(`/api/v1/system/power/${reboot ? 'reboot' : 'shutdown'}`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${localStorage.getItem('authToken') || ''}` },
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        window.location.href = reboot ? '/reboot.html' : '/shutdown.html';
+      } catch (error) {
+        window.alert(`Aktion konnte nicht gestartet werden: ${error.message}`);
+      }
+    });
+
+    document.addEventListener('pointerdown', (event) => {
+      if (!actions.contains(event.target)) {
+        menu.hidden = true;
+        moreButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+    toolbar.append(actions);
+  };
+
+  const syncTopbar = () => {
+    enableDrawer();
+    hideNativeActionItems();
+    createActions();
+  };
+
+  const observer = new MutationObserver(syncTopbar);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['inert'],
+    childList: true,
+    subtree: true,
+  });
+  syncTopbar();
+})();
+</script>
+SCRIPT
 }
 
 apply_theme() {
@@ -168,8 +441,11 @@ apply_theme() {
         index($0, "<style id=\"mos-topbar-style\">") { inside = 1; found = 1; next }
         inside && index($0, "</style>") { inside = 0; next }
         inside { next }
+        index($0, "<script id=\"mos-topbar-runtime\">") { inside_script = 1; found = 1; next }
+        inside_script && index($0, "</script>") { inside_script = 0; next }
+        inside_script { next }
         { print }
-        END { if (!found || inside) exit 1 }
+        END { if (!found || inside || inside_script) exit 1 }
       ' "$INDEX_HTML" > "$temp_html"; then
         rm -f "$temp_html"
         echo "Vorhandene Top-Bar-Styles konnten nicht entfernt werden." >&2
@@ -189,7 +465,7 @@ apply_theme() {
     source_html="$BACKUP_HTML"
   fi
 
-  css_override=$(_topbar_css "$theme")
+  css_override=$(_topbar_css "$theme"; _topbar_runtime)
   temp_html=$(mktemp "$FRONTEND_DIR/.index.html.XXXXXX") || return 1
 
   if ! awk -v css="$css_override" '
