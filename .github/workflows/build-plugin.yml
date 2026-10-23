@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Plugin release version, for example 1.0.7
+        description: Plugin release version, for example 1.0.8
         required: true
-        default: 1.0.7
+        default: 1.0.8
 
 permissions:
   contents: write
@@ -61,12 +61,8 @@ jobs:
           test -f page/dist/unraid/manifest.json
 
           mkdir -p "$PACKAGE_DIR/var/www/mos-plugins/unraid"
-          mkdir -p "$PACKAGE_DIR/boot/optional/plugins/unraid"
           mkdir -p "$PACKAGE_DIR/DEBIAN"
           cp -R page/dist/unraid/. "$PACKAGE_DIR/var/www/mos-plugins/unraid/"
-          cp functions "$PACKAGE_DIR/boot/optional/plugins/unraid/functions"
-          cp settings.json "$PACKAGE_DIR/boot/optional/plugins/unraid/settings.json"
-          chmod 755 "$PACKAGE_DIR/boot/optional/plugins/unraid/functions"
 
           cat > "$PACKAGE_DIR/DEBIAN/control" <<EOF
           Package: unraid-plugin
@@ -76,14 +72,12 @@ jobs:
           Description: MOS horizontal top navigation plugin
           EOF
 
-          cat > "$PACKAGE_DIR/DEBIAN/postinst" <<'EOF'
-          #!/bin/sh
-          chmod 755 /boot/optional/plugins/unraid/functions 2>/dev/null || true
-          exit 0
-          EOF
-          chmod 755 "$PACKAGE_DIR/DEBIAN/postinst"
-
           dpkg-deb --build "$PACKAGE_DIR" "$DEB_FILE"
+          dpkg-deb --contents "$DEB_FILE" | grep -q './var/www/mos-plugins/unraid/manifest.json'
+          if dpkg-deb --contents "$DEB_FILE" | grep -q './boot/'; then
+            echo "ERROR: plugin package must not write to /boot"
+            exit 1
+          fi
           md5sum "$DEB_FILE" | awk '{print $1}' > "$DEB_FILE.md5"
 
       - name: Publish release assets

@@ -8,7 +8,7 @@ Das Repository als MOS-Hub-Quelle hinzufügen, den Hub aktualisieren und **Top M
 
 ## Entwicklung
 
-Das Plugin verwendet die MOS-Vue-Federation-Schnittstelle. Ein Release-Tag wie `v1.0.7` baut das Frontend-Remote und veröffentlicht das MOS-Pluginpaket samt Prüfsumme.
+Das Plugin verwendet die MOS-Vue-Federation-Schnittstelle. Ein Release-Tag wie `v1.0.8` baut das Frontend-Remote und veröffentlicht das MOS-Pluginpaket samt Prüfsumme.
 
 ## Deinstallation
 
