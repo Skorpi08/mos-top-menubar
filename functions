@@ -4,9 +4,12 @@ PLUGIN_NAME="unraid"
 FRONTEND_DIR="${MOS_FRONTEND_DIR:-/var/www}"
 INDEX_HTML="$FRONTEND_DIR/index.html"
 BACKUP_HTML="$FRONTEND_DIR/index.html.top-menubar.bak"
+SETTINGS_FILE="${MOS_PLUGIN_CONFIG_DIR:-/boot/optional/plugins/$PLUGIN_NAME}/settings.json"
 STYLE_ID="mos-topbar-style"
 
 _topbar_css() {
+  local theme="$1"
+
   cat <<'CSS'
 <style id="mos-topbar-style">
 #app > .v-application__wrap > .v-navigation-drawer {
@@ -92,24 +95,92 @@ _topbar_css() {
     padding-top: 108px !important;
   }
 }
-</style>
 CSS
+
+  case "$theme" in
+    compact)
+      cat <<'CSS'
+#app > .v-application__wrap > .v-navigation-drawer {
+  height: 48px !important;
+  max-height: 48px !important;
+}
+#app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content,
+#app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
+  height: 48px !important;
+}
+#app > .v-application__wrap > .v-navigation-drawer .v-list-item {
+  min-height: 40px !important;
+}
+.v-main {
+  padding-top: 112px !important;
+}
+@media (max-width: 600px) {
+  #app > .v-application__wrap > .v-navigation-drawer {
+    height: 44px !important;
+    max-height: 44px !important;
+  }
+  #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content,
+  #app > .v-application__wrap > .v-navigation-drawer .v-navigation-drawer__content > .v-list {
+    height: 44px !important;
+  }
+  .v-main {
+    padding-top: 100px !important;
+  }
+}
+CSS
+      ;;
+    accent)
+      cat <<'CSS'
+#app > .v-application__wrap > .v-navigation-drawer {
+  background: rgb(var(--v-theme-surface-variant)) !important;
+  border-bottom: 2px solid rgb(var(--v-theme-primary)) !important;
+}
+#app > .v-application__wrap > .v-navigation-drawer .v-list-item--active {
+  color: rgb(var(--v-theme-primary)) !important;
+}
+CSS
+      ;;
+  esac
+
+  printf '%s\n' '</style>'
 }
 
-install() {
-  local css_override source_html temp_html
+apply_theme() {
+  local css_override source_html temp_html theme
 
   if [ ! -f "$INDEX_HTML" ]; then
     echo "MOS Frontend-Datei nicht gefunden: $INDEX_HTML" >&2
     return 1
   fi
 
+  theme=$(jq -r '.theme // "standard"' "$SETTINGS_FILE" 2>/dev/null || printf 'standard')
+  case "$theme" in
+    standard|compact|accent) ;;
+    *) theme="standard" ;;
+  esac
+
   if grep -q "$STYLE_ID" "$INDEX_HTML"; then
-    if [ ! -f "$BACKUP_HTML" ]; then
-      echo "Top-Bar-CSS ist vorhanden, aber das Original-Backup fehlt: $BACKUP_HTML" >&2
-      return 1
+    if [ -f "$BACKUP_HTML" ]; then
+      source_html="$BACKUP_HTML"
+    else
+      temp_html=$(mktemp "$FRONTEND_DIR/.index.html.XXXXXX") || return 1
+      if ! awk '
+        index($0, "<style id=\"mos-topbar-style\">") { inside = 1; found = 1; next }
+        inside && index($0, "</style>") { inside = 0; next }
+        inside { next }
+        { print }
+        END { if (!found || inside) exit 1 }
+      ' "$INDEX_HTML" > "$temp_html"; then
+        rm -f "$temp_html"
+        echo "Vorhandene Top-Bar-Styles konnten nicht entfernt werden." >&2
+        return 1
+      fi
+      mv "$temp_html" "$BACKUP_HTML" || {
+        rm -f "$temp_html"
+        return 1
+      }
+      source_html="$BACKUP_HTML"
     fi
-    source_html="$BACKUP_HTML"
   else
     if ! cp "$INDEX_HTML" "$BACKUP_HTML"; then
       echo "Original-Frontend konnte nicht gesichert werden." >&2
@@ -118,7 +189,7 @@ install() {
     source_html="$BACKUP_HTML"
   fi
 
-  css_override=$(_topbar_css)
+  css_override=$(_topbar_css "$theme")
   temp_html=$(mktemp "$FRONTEND_DIR/.index.html.XXXXXX") || return 1
 
   if ! awk -v css="$css_override" '
@@ -147,15 +218,23 @@ install() {
     return 1
   }
 
-  echo "Top Menu Bar wurde in MOS aktiviert."
+  echo "Top Menu Bar wurde mit Theme '$theme' angewendet."
+}
+
+install() {
+  apply_theme
 }
 
 plugin_update() {
-  install
+  apply_theme
+}
+
+mos_start() {
+  apply_theme
 }
 
 uninstall() {
-  if [ -f "$BACKUP_HTML" ]; then
+  if grep -q "$STYLE_ID" "$INDEX_HTML" 2>/dev/null && [ -f "$BACKUP_HTML" ]; then
     if ! mv "$BACKUP_HTML" "$INDEX_HTML"; then
       echo "MOS Frontend konnte nicht wiederhergestellt werden." >&2
       return 1
@@ -167,4 +246,6 @@ uninstall() {
   else
     echo "Top Menu Bar ist nicht installiert."
   fi
+
+  rm -f "$BACKUP_HTML"
 }

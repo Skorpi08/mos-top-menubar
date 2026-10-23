@@ -17,6 +17,7 @@ const generateManifest = {
       description: pluginConfig.description,
       version: pluginVersion,
       icon: pluginConfig.icon,
+      settings: pluginConfig.settings,
       author: pluginConfig.author,
       homepage: pluginConfig.homepage,
       widget: pluginConfig.widget,

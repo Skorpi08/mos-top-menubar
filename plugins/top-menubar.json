@@ -4,6 +4,7 @@
   "category": [ "Utilities" ],
   "repository": "https://github.com/Skorpi08/mos-unraid",
   "driver": false,
+  "settings": true,
   "icon": "mdi-page-layout-header",
   "readme_url": "https://github.com/Skorpi08/mos-unraid#readme",
   "author": "Skorpi08",
