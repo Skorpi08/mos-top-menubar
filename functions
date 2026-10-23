@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PLUGIN_NAME="unraid"
+PLUGIN_NAME="top-menubar"
 FRONTEND_DIR="${MOS_FRONTEND_DIR:-/var/www}"
 INDEX_HTML="$FRONTEND_DIR/index.html"
 BACKUP_HTML="$FRONTEND_DIR/index.html.top-menubar.bak"

@@ -53,19 +53,19 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          PACKAGE="unraid-${VERSION}-1+mos-plugin"
+          PACKAGE="top-menubar-${VERSION}-1+mos-plugin"
           PACKAGE_DIR="${PACKAGE}_all"
           DEB_FILE="${PACKAGE}_all.deb"
 
-          test -f page/dist/unraid/remoteEntry.js
-          test -f page/dist/unraid/manifest.json
+          test -f page/dist/top-menubar/remoteEntry.js
+          test -f page/dist/top-menubar/manifest.json
 
-          mkdir -p "$PACKAGE_DIR/var/www/mos-plugins/unraid"
+          mkdir -p "$PACKAGE_DIR/var/www/mos-plugins/top-menubar"
           mkdir -p "$PACKAGE_DIR/DEBIAN"
-          cp -R page/dist/unraid/. "$PACKAGE_DIR/var/www/mos-plugins/unraid/"
+          cp -R page/dist/top-menubar/. "$PACKAGE_DIR/var/www/mos-plugins/top-menubar/"
 
           cat > "$PACKAGE_DIR/DEBIAN/control" <<EOF
-          Package: unraid-plugin
+          Package: mos-top-menubar-plugin
           Version: ${VERSION}-1+mos-plugin
           Architecture: all
           Maintainer: Skorpi08
@@ -73,7 +73,7 @@ jobs:
           EOF
 
           dpkg-deb --build "$PACKAGE_DIR" "$DEB_FILE"
-          dpkg-deb --contents "$DEB_FILE" | grep -q './var/www/mos-plugins/unraid/manifest.json'
+          dpkg-deb --contents "$DEB_FILE" | grep -q './var/www/mos-plugins/top-menubar/manifest.json'
           if dpkg-deb --contents "$DEB_FILE" | grep -q './boot/'; then
             echo "ERROR: plugin package must not write to /boot"
             exit 1
@@ -87,5 +87,5 @@ jobs:
           name: Top Menu Bar ${{ steps.version.outputs.version }}
           generate_release_notes: true
           files: |
-            unraid-${{ steps.version.outputs.version }}-1+mos-plugin_all.deb
-            unraid-${{ steps.version.outputs.version }}-1+mos-plugin_all.deb.md5
+            top-menubar-${{ steps.version.outputs.version }}-1+mos-plugin_all.deb
+            top-menubar-${{ steps.version.outputs.version }}-1+mos-plugin_all.deb.md5

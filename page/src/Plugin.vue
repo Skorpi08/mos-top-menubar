@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 
-const pluginName = 'unraid';
+const pluginName = 'top-menubar';
 const themeOptions = [
   { title: 'Standard', value: 'standard' },
   { title: 'Kompakt', value: 'compact' },
