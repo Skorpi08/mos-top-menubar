@@ -1,19 +1,14 @@
 #!/bin/bash
-# install.sh für das 'mos-profile-button' Plugin
+# Skript zur Installation der oberen Menüleiste
 
-PLUGIN_DIR="/boot/optional/plugins/mos-profile-button"
-TARGET_UI_DIR="/usr/share/nginx/html/assets/plugins"
+echo "Installiere Top-Menüleiste Plugin..."
 
-echo "=== Installiere MOS-Plugin: Profile Quick Link ==="
+# BEISPIEL: Wenn MOS ein Custom-CSS-Verzeichnis nutzt (Pfade ggf. anpassen)
+# mkdir -p /usr/share/mos/frontend/custom/
+# echo ".navbar { position: fixed; top: 0; width: 100%; z-index: 1000; }" > /usr/share/mos/frontend/custom/top-menu.css
 
-# 1. Zielverzeichnis im Web-Root anlegen falls nicht vorhanden
-mkdir -p "$TARGET_UI_DIR"
+# System-Dienst oder Webserver neu starten, falls nötig
+# systemctl restart mos-frontend
 
-# 2. Kopiere die Vue-Komponente in den MOS-Frontend-Pfad
-cp "$PLUGIN_DIR/ui/NavbarProfileButton.vue" "$TARGET_UI_DIR/mos-profile-button.vue"
-
-# 3. Berechtigungen anpassen, damit Nginx die Datei lesen kann
-chmod 644 "$TARGET_UI_DIR/mos-profile-button.vue"
-
-echo "=== Plugin erfolgreich installiert! ==="
+echo "Installation abgeschlossen!"
 exit 0
