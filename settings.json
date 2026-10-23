@@ -1,7 +1,7 @@
 {
   "name": "Top Bar Navigation",
   "id": "mos-topbar-navigation",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Verschiebt die Hauptnavigation an den oberen Bildschirmrand für ein kompakteres Layout.",
   "author": "Skorpi08",
   "icon": "mdi-page-layout-header",

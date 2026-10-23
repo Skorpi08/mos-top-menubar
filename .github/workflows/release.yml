@@ -14,6 +14,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Fix Line Endings and Permissions
+        run: |
+          # Beseitigt Windows-Zeilenumbrüche (CRLF zu LF) in den Skripten
+          if [ -d "functions" ]; then
+            sed -i 's/\r$//' functions/* || true
+            chmod +x functions/* || true
+          fi
+
       - name: Verify Plugin Structure
         run: |
           if [ ! -d "functions" ]; then
@@ -36,7 +44,7 @@ jobs:
           cp -r settings.json dist/
           if [ -d "page" ]; then cp -r page dist/; fi
           
-          # WICHTIG: Erzwinge Ausführungsrechte für MOS direkt im Paket!
+          # Sicherstellen, dass die Rechte im fertigen Paket erhalten bleiben
           chmod +x dist/functions/install
           chmod +x dist/functions/uninstall
           
@@ -45,7 +53,6 @@ jobs:
           cd ..
           
           echo "PLUGIN_ARCHIVE=${PLUGIN_NAME}.tar.gz" >> $GITHUB_ENV
-
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
