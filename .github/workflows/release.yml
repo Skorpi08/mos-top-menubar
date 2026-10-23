@@ -1,0 +1,55 @@
+name: Build and Release MOS Plugin
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Verify Plugin Structure
+        run: |
+          if [ ! -d "functions" ]; then
+            echo "Fehler: Ordner 'functions' existiert nicht!" && exit 1
+          fi
+          if [ ! -f "functions/install" ]; then
+            echo "Fehler: Installationsskript 'functions/install' fehlt!" && exit 1
+          fi
+          if [ ! -f "settings.json" ]; then
+            echo "Fehler: 'settings.json' fehlt!" && exit 1
+          fi
+
+      - name: Prepare and Package Plugin
+        run: |
+          # Extrahiert den Namen des Plugins aus der settings.json (Standard-Fallback falls jq fehlt)
+          PLUGIN_NAME=$(node -e "console.log(require('./settings.json').id || 'mos-topbar-navigation')")
+          echo "Verpacke Plugin: $PLUGIN_NAME"
+          
+          # Erstellt ein temporäres Verzeichnis für die saubere Paketierung
+          mkdir -p dist
+          
+          # Kopiert die relevanten Ordner und Dateien
+          cp -r functions dist/
+          cp -r settings.json dist/
+          if [ -d "page" ]; then cp -r page dist/; fi
+          
+          # Packt das Plugin in ein .tar.gz Archiv im Hauptordner
+          cd dist
+          tar -cvzf ../${PLUGIN_NAME}.tar.gz *
+          cd ..
+          
+          echo "PLUGIN_ARCHIVE=${PLUGIN_NAME}.tar.gz" >> $GITHUB_ENV
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.PLUGIN_ARCHIVE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
