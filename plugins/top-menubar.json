@@ -1,10 +1,15 @@
 {
-  "name": "Top Bar Navigation",
-  "description": "Verschiebt die Navigation nach oben für eine effizientere Bildschirmnutzung.",
+  "name": "Top Menu Bar",
+  "description": "Fixiert das MOS-Navigationsmenü am oberen Bildschirmrand über CSS-Injektion.",
   "category": [ "Utilities" ],
   "repository": "https://github.com/Skorpi08/mos-unraid",
-  "version": "1.0.1",
   "architecture": [ "amd64", "arm64" ],
   "driver": false,
-  "author": "Skorpi08"
+  "version": "1.0.3",
+  "icon": "https://example.com/icon.png",
+  "readme_url": "https://example.com/my-driver-docs",
+  "author": "your-name",
+  "homepage": "https://example.com/driver-homepage",
+  "support": "https://github.com/username/my-driver-repo/issues",
+  "donate": "https://paypal.me/username"
 }
